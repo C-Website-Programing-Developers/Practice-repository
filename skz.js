@@ -273,3 +273,8 @@ function onSubmit(e) {
         emailInput.value = '';
     }
 }
+
+const place = "world";
+const greeting = "Hello";
+
+console.log(`${greeting},${place}`);
