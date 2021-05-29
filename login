@@ -2,6 +2,7 @@ from logging import debug
 import dash
 import dash_html_components as html
 import dash_bootstrap_components as dbc
+from dash.dependencies import Input, Output
 
 app = dash.Dash(
     __name__,
@@ -23,16 +24,28 @@ app.layout = html.Div(
             [
                 dbc.Row(style={'height': '30px'}),  # 利用css设置高度
                 dbc.Row(
-                    dbc.Col('Email address')
+                    dbc.Col('User‘s Name')
                 ),
                 dbc.Row(
-                    dbc.Col(dbc.Input(placeholder='Enter email'))
+                    [
+                        dbc.Col(dbc.Input(id='input-value1',
+                                          placeholder='请输入您的用户名'),
+                                width=12),
+                        dbc.Col(dbc.Label(id='output-value1'),
+                                width=12)
+                    ]
                 ),
                 dbc.Row(
                     dbc.Col('Password')
                 ),
                 dbc.Row(
-                    dbc.Col(dbc.Input(placeholder='Enter Password'))
+                    [
+                        dbc.Col(dbc.Input(id='input-value2',
+                                          placeholder='请输入您的账户密码'),
+                                width=12),
+                        dbc.Col(dbc.Label(id='output-value2'),
+                                width=12)
+                    ]
                 ),
                 dbc.Row(
                     dbc.Col(
@@ -93,6 +106,22 @@ app.layout = html.Div(
         )
     ]
 )
+
+
+@app.callback(
+    [Output('output-value1', 'children'),
+     Output('output-value2', 'children')],
+    [Input('input-value1', 'value'),
+     Input('input-value2', 'value')]
+)
+def input_to_output(value1, value2):
+
+    try:
+        return '用户姓名：' + value1, f'账户密码长度为{len(value2)}'
+    except:
+        return '等待输入...', '等待输入...'
+
+
 
 if __name__ == '__main__':
     app.run_server(debug = True)
